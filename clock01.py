@@ -15,7 +15,7 @@ class StopWatch(Frame):
 
     def makeWidgets(self):
         """ Make the time label. """
-        l = Label(self, textvariable=self.timestr, bg='yellow')
+        l = Label(self, textvariable=self.timestr, bg='skyblue')
         self._setTime(self._elapsedtime)
         l.pack(fill=X, expand=NO, pady=2, padx=2)
 
@@ -42,7 +42,18 @@ class StopWatch(Frame):
 
 def main():
     root = Tk()
-    root.geometry('300x300')
+    # Gets the requested values of the height and widht.
+    windowWidth = root.winfo_reqwidth()
+    windowHeight = root.winfo_reqheight()
+
+    # Gets both half the screen width/height and window width/height
+    positionRight = int(root.winfo_screenwidth() / 2 - windowWidth / 2)
+    positionDown = int(root.winfo_screenheight() / 2 - windowHeight / 2)
+
+    # Positions the window in the center of the page.
+    root.geometry("200x200+{}+{}".format(positionRight, positionDown))
+    #root.geometry('300x300')
+    root.attributes("-topmost", True)
     bottom_frame = Frame(root)
     bottom_frame.pack(side=BOTTOM)  # which implicitly packs top_frame on the top
     sw = StopWatch(root)
