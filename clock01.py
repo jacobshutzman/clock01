@@ -12,18 +12,21 @@ class StopWatch(Frame):
         self._running = 0
         self.timestr = StringVar()
         self.makeWidgets()
+        self.on = True
 
     def makeWidgets(self):
         """ Make the time label. """
-        l = Label(self, textvariable=self.timestr, bg='skyblue')
+        l = Label(self, textvariable=self.timestr, bg='skyblue',
+                  font=("Arial", 25, "bold"))
         self._setTime(self._elapsedtime)
         l.pack(fill=X, expand=NO, pady=2, padx=2)
 
     def _update(self):
         """ Update the label with elapsed time. """
-        self._elapsedtime = time.time() - self._start
-        self._setTime(self._elapsedtime)
-        self._timer = self.after(50, self._update)
+        if self.on:
+            self._elapsedtime = time.time() - self._start
+            self._setTime(self._elapsedtime)
+            self._timer = self.after(10, self._update)
 
     def _setTime(self, elap):
         """ Set the time string to Minutes:Seconds:Hundreths """
@@ -39,9 +42,24 @@ class StopWatch(Frame):
             self._update()
             self._running = 1
 
+    def restart(self):
+        self._start = 0.0
+        self._elapsedtime = 0.0
+        self._running = 0
+        self.on = True
+        self.Start()
+
+
+    def stop_timer(self):
+        self.on = False
+
+    def reset(self):
+        self.timestr.set('00:00:00')
+
 
 def main():
     root = Tk()
+    root.title('Stopwatch')
     # Gets the requested values of the height and widht.
     windowWidth = root.winfo_reqwidth()
     windowHeight = root.winfo_reqheight()
@@ -62,6 +80,9 @@ def main():
     sw.Start()
 
     Button(root, text='Quit', command=root.quit).pack(side=RIGHT)
+    Button(root, text='Stop', command=lambda: sw.stop_timer()).pack(side=BOTTOM)
+    Button(root, text='Restart', command=lambda: sw.restart()).pack(side=BOTTOM)
+    Button(root, text='Reset', command=lambda: sw.reset()).pack(side=BOTTOM)
 
     root.mainloop()
 
