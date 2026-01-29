@@ -16,10 +16,14 @@ class StopWatch(Frame):
 
     def makeWidgets(self):
         """ Make the time label. """
+
         l = Label(self, textvariable=self.timestr, bg='skyblue',
-                  font=("Arial", 25, "bold"))
+                  anchor="center", font=("Arial", 25, "bold"))
         self._setTime(self._elapsedtime)
-        l.pack(fill=X, expand=NO, pady=2, padx=2)
+        l.grid(row=0, column=0, columnspan=4, sticky="ew")
+        for i in range(4):
+            self.grid_columnconfigure(i, weight=1)
+
 
     def _update(self):
         """ Update the label with elapsed time. """
@@ -43,6 +47,11 @@ class StopWatch(Frame):
             self._running = 1
 
     def restart(self):
+        self._running = 0
+        self.on = True
+        self.Start()
+
+    def start1(self):
         self._start = 0.0
         self._elapsedtime = 0.0
         self._running = 0
@@ -69,21 +78,31 @@ def main():
     positionDown = int(root.winfo_screenheight() / 2 - windowHeight / 2)
 
     # Positions the window in the center of the page.
-    root.geometry("200x200+{}+{}".format(positionRight, positionDown))
-    #root.geometry('300x300')
+    root.geometry("350x200+{}+{}".format(positionRight, positionDown))
     root.attributes("-topmost", True)
+    root.grid_columnconfigure(0, weight=1)
+
     bottom_frame = Frame(root)
-    bottom_frame.pack(side=BOTTOM)  # which implicitly packs top_frame on the top
+    #bottom_frame.pack(side=BOTTOM)  # which implicitly packs top_frame on the top
+
+    bottom_frame.grid(row=0, column=0)
     sw = StopWatch(root)
-    sw.pack(side=TOP)
+    sw.grid(row=0, column=0, columnspan=4, sticky="nsew")
+
     # Button(root, text='Start', command=sw.Start).pack(side=LEFT)
     sw.Start()
 
-    Button(root, text='Quit', command=root.quit).pack(side=RIGHT)
-    Button(root, text='Stop', command=lambda: sw.stop_timer()).pack(side=BOTTOM)
-    Button(root, text='Restart', command=lambda: sw.restart()).pack(side=BOTTOM)
-    Button(root, text='Reset', command=lambda: sw.reset()).pack(side=BOTTOM)
+    qu = Button(root, text='Quit', command=root.quit)
+    st = Button(root, text='Stop', command=lambda: sw.stop_timer())
+    co = Button(root, text='Continue', command=lambda: sw.restart())
+    re = Button(root, text='Reset', command=lambda: sw.reset())
+    sr = Button(root, text='Start', command=lambda: sw.start1())
 
+    st.grid(row=1, column=0)
+    co.grid(row=1, column=1)
+    sr.grid(row=1, column=2)
+    re.grid(row=1, column=3)
+    qu.grid(row=2, column=0, columnspan=4, sticky="nsew")
     root.mainloop()
 
 
