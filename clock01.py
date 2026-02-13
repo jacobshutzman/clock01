@@ -17,7 +17,7 @@ class StopWatch(Frame):
     def makeWidgets(self):
         """ Make the time label. """
 
-        l = Label(self, textvariable=self.timestr, bg='skyblue',
+        l = Label(self, textvariable=self.timestr, bg='magenta',
                   anchor="center", font=("Arial", 25, "bold"))
         self._setTime(self._elapsedtime)
         l.grid(row=0, column=0, columnspan=4, sticky="ew")
@@ -96,7 +96,7 @@ def main():
     st = Button(root, text='Stop', command=lambda: sw.stop_timer())
     co = Button(root, text='Continue', command=lambda: sw.restart())
     re = Button(root, text='Reset', command=lambda: sw.reset())
-    sr = Button(root, text='Start', command=lambda: sw.start1())
+    sr = Button(root, text='Restart', command=lambda: sw.start1())
 
     st.grid(row=1, column=0)
     co.grid(row=1, column=1)
